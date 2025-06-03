@@ -16,8 +16,6 @@ login_manager.login_message_category = 'info'
 
 
 
-# ---------------------- Auth Routes ----------------------
-
 @app.route('/')
 def index():
     print("=== INDEX ROUTE CALLED ===")
@@ -92,11 +90,6 @@ def login():
     print(f"Current user: {current_user}")
     print(f"Current user type: {type(current_user)}")
     
-    # TEMPORARILY COMMENT OUT THE REDIRECT CHECK TO DEBUG
-    # if current_user.is_authenticated:
-    #     print("User already authenticated, redirecting to index")
-    #     return redirect(url_for('index'))
-
     if request.method == 'POST':
         print("Processing POST request for login")
         username_or_email = request.form.get('username_or_email', '').strip()
@@ -135,18 +128,18 @@ def logout():
     flash('You have been logged out.', 'info')
     return redirect(url_for('login'))
 
-# ---------------------- Task Routes ----------------------
 
 @app.route('/dashboard')
 @login_required
 def dashboard():
     tasks = Task.query.filter_by(user_id=current_user.id).order_by(Task.due_date).all()
-    return render_template('dashboard.html', tasks=tasks)
+    today = datetime.today().date()
+    return render_template('dashboard.html', tasks=tasks, today=today)
 
 @app.route('/task/new', methods=['GET', 'POST'])
 @login_required
 def new_task():
-    if request.is_json:  # Handle AJAX JSON request
+    if request.is_json:  
         data = request.get_json() or {}
         title = data.get('title', '').strip()
         if not title:
@@ -258,8 +251,5 @@ if __name__ == '__main__':
             print(f"Error creating database tables: {e}")
     
     print("=== STARTING FLASK APP ===")
-    print("Available routes:")
-    for rule in app.url_map.iter_rules():
-        print(f"  {rule.endpoint}: {rule}")
     
     app.run(debug=True)
