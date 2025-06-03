@@ -24,12 +24,12 @@
     <form method="POST" action="{{ url_for('login') }}" autocomplete="off">
         <div class="mb-3">
             <label for="username_or_email" class="form-label">Username or Email</label>
-            <input type="text" class="form-control" id="username_or_email" name="username_or_email" required />
+            <input type="text" class="form-control" id="username_or_email" name="username_or_email" required autocomplete="username" />
         </div>
 
         <div class="mb-3">
             <label for="password" class="form-label">Password</label>
-            <input type="password" class="form-control" id="password" name="password" required />
+            <input type="password" class="form-control" id="password" name="password" required autocomplete="new-password" />
         </div>
 
         <button type="submit" class="btn btn-primary">Log In</button>
