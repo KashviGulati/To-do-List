@@ -1,65 +1,238 @@
 {% extends "layout.html" %}
 {% block content %}
-<h2>{{ 'Edit Task' if task else 'New Task' }}</h2>
-
-<form method="POST">
-    <div class="form-group">
-        <label for="title">Title *</label>
-        <input type="text" name="title" id="title" class="form-control" required
-               value="{{ task.title if task else '' }}">
+<div class="content-card max-w-2xl mx-auto">
+    <div class="flex justify-between items-center mb-8">
+        <h2 class="text-3xl font-bold text-gray-800">{{ 'Edit Task' if task else 'Create New Task' }}</h2>
+        <a href="{{ url_for('dashboard') }}" class="btn-secondary inline-flex items-center">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+            </svg>
+            Back to Dashboard
+        </a>
     </div>
 
-    <div class="form-group mt-2">
-        <label for="description">Description</label>
-        <textarea name="description" id="description" class="form-control">{{ task.description if task else '' }}</textarea>
-    </div>
+    <form method="POST" class="task-form">
+        <div class="form-group">
+            <label for="title" class="form-label">Title *</label>
+            <input type="text" 
+                   name="title" 
+                   id="title" 
+                   class="form-control" 
+                   required
+                   value="{{ task.title if task else '' }}"
+                   placeholder="Enter task title">
+            <div class="input-icon">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                </svg>
+            </div>
+        </div>
 
-    <div class="form-group mt-2">
-        <label for="status">Status</label>
-        <select name="status" id="status" class="form-control">
-            {% set current_status = task.status if task else 'Pending' %}
-            <option value="Pending" {% if current_status == 'Pending' %}selected{% endif %}>Pending</option>
-            <option value="In Progress" {% if current_status == 'In Progress' %}selected{% endif %}>In Progress</option>
-            <option value="Completed" {% if current_status == 'Completed' %}selected{% endif %}>Completed</option>
-        </select>
-    </div>
+        <div class="form-group">
+            <label for="description" class="form-label">Description</label>
+            <textarea name="description" 
+                      id="description" 
+                      class="form-control h-32"
+                      placeholder="Enter task description">{{ task.description if task else '' }}</textarea>
+            <div class="input-icon">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path>
+                </svg>
+            </div>
+        </div>
 
-    <div class="form-group mt-2">
-        <label for="due_date">Due Date (YYYY-MM-DD)</label>
-        <input type="date" name="due_date" id="due_date" class="form-control"
-               value="{{ task.due_date.strftime('%Y-%m-%d') if task and task.due_date else '' }}">
-    </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="form-group">
+                <label for="status" class="form-label">Status</label>
+                <div class="relative">
+                    <select name="status" 
+                            id="status" 
+                            class="form-control">
+                        {% set current_status = task.status if task else 'Pending' %}
+                        <option value="Pending" {% if current_status == 'Pending' %}selected{% endif %}>Pending</option>
+                        <option value="In Progress" {% if current_status == 'In Progress' %}selected{% endif %}>In Progress</option>
+                        <option value="Completed" {% if current_status == 'Completed' %}selected{% endif %}>Completed</option>
+                    </select>
+                    <div class="input-icon">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v4"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
 
-    <button type="submit" class="btn btn-success mt-3">{{ 'Update' if task else 'Create' }}</button>
-    <a href="{{ url_for('dashboard') }}" class="btn btn-secondary mt-3">Cancel</a>
-</form>
+            <div class="form-group">
+                <label for="due_date" class="form-label">Due Date</label>
+                <div class="relative">
+                    <input type="date" 
+                           name="due_date" 
+                           id="due_date" 
+                           class="form-control"
+                           value="{{ task.due_date.strftime('%Y-%m-%d') if task and task.due_date else '' }}">
+                    <div class="input-icon">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex justify-end space-x-4 mt-8">
+            <button type="submit" class="btn-primary">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+                {{ 'Update Task' if task else 'Create Task' }}
+            </button>
+            <a href="{{ url_for('dashboard') }}" class="btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<style>
+.task-form {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.form-label {
+    display: block;
+    color: #374151;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    padding-right: 3rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    background: rgba(255, 255, 255, 0.95);
+    transform: translateY(-1px);
+}
+
+.form-control:focus + .form-label {
+    color: #4f46e5;
+}
+
+.form-control::placeholder {
+    color: #9ca3af;
+    opacity: 1;
+}
+
+.input-icon {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(calc(-50% + 0.5rem));
+    color: #9ca3af;
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.form-control:focus ~ .input-icon {
+    color: #4f46e5;
+}
+
+select.form-control {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.5rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5rem;
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .task-form {
+        padding: 1.5rem;
+    }
+    
+    .grid-cols-2 {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+    // Set minimum date to today for due date
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('due_date').min = today;
+    
+    // Add form submission handling
     const form = document.querySelector('form');
     if (form) {
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
-
-            const formData = new FormData(form);
-            const jsonData = {};
-            formData.forEach((value, key) => { jsonData[key] = value });
-
-            const response = await fetch(form.action, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(jsonData)
-            });
-
-            const result = await response.json();
-            if (result.success) {
-                window.location.href = '/dashboard';
-            } else {
-                alert(result.message || "Error saving task");
+            
+            const submitBtn = form.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `
+                <div class="btn-loading"></div>
+                Processing...
+            `;
+            
+            try {
+                const formData = new FormData(form);
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (response.ok) {
+                    window.location.href = "{{ url_for('dashboard') }}";
+                } else {
+                    const result = await response.json();
+                    alert(result.message || "Error saving task");
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = `
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        {{ 'Update Task' if task else 'Create Task' }}
+                    `;
+                }
+            } catch (error) {
+                alert("An error occurred. Please try again.");
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = `
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    {{ 'Update Task' if task else 'Create Task' }}
+                `;
             }
         });
     }
 });
 </script>
-
 {% endblock %}
