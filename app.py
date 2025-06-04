@@ -37,10 +37,7 @@ def register():
     print(f"Current user: {current_user}")
     print(f"Current user type: {type(current_user)}")
     
-    # TEMPORARILY COMMENT OUT THE REDIRECT CHECK TO DEBUG
-    # if current_user.is_authenticated:
-    #     print("User already authenticated, redirecting to index")
-    #     return redirect(url_for('index'))
+    
 
     if request.method == 'POST':
         print("Processing POST request for registration")
@@ -242,7 +239,6 @@ def delete_task(task_id):
     return redirect(url_for('dashboard'))
 
 if __name__ == '__main__':
-    print("=== CREATING DATABASE TABLES ===")
     with app.app_context():
         try:
             db.create_all()

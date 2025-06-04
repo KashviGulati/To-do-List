@@ -53,11 +53,6 @@
                         <option value="In Progress" {% if current_status == 'In Progress' %}selected{% endif %}>In Progress</option>
                         <option value="Completed" {% if current_status == 'Completed' %}selected{% endif %}>Completed</option>
                     </select>
-                    <div class="input-icon">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v4"></path>
-                        </svg>
-                    </div>
                 </div>
             </div>
 
@@ -69,11 +64,6 @@
                            id="due_date" 
                            class="form-control"
                            value="{{ task.due_date.strftime('%Y-%m-%d') if task and task.due_date else '' }}">
-                    <div class="input-icon">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                        </svg>
-                    </div>
                 </div>
             </div>
         </div>
@@ -170,7 +160,7 @@ textarea.form-control {
     min-height: 100px;
 }
 
-/* Responsive adjustments */
+
 @media (max-width: 768px) {
     .task-form {
         padding: 1.5rem;
@@ -184,11 +174,11 @@ textarea.form-control {
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-    // Set minimum date to today for due date
+    
     const today = new Date().toISOString().split('T')[0];
     document.getElementById('due_date').min = today;
     
-    // Add form submission handling
+
     const form = document.querySelector('form');
     if (form) {
         form.addEventListener('submit', async (e) => {
